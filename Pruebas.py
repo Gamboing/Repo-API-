@@ -28,3 +28,11 @@ async def read_item(skip: int = 0, limit: int = 10):
 @app.post("/items/")
 async def create_item(item: Item):
     return item
+
+# Cuerpo de solicitud "Modelo de Pydantic", parametro de ruta "item_id" que reibe el id y lo transforma a tipo entero, parametro de consulta q que es opcional
+@app.put("/items/{item_id}")
+async def update_item(item_id: int, item: Item, q: str | None = None): # Los 3 segmentos juntos
+    result = {"item_id": item_id, **item.dict()}
+    if q:                  # si se ingreso q ya que es opcional
+        result.update({"q": q}) # se actualiza q
+    return result
