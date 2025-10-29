@@ -1,0 +1,88 @@
+# ========================
+# 🔧 UTILIDADES BÁSICAS
+# ========================
+requests==2.32.3         # Hacer peticiones HTTP/HTTPS fácilmente
+urllib3==2.2.3           # Librería subyacente para manejo avanzado de HTTP
+python-dotenv==1.0.1     # Cargar variables de entorno desde un archivo .env
+rich==13.8.0             # Salida de texto con colores y formato bonito en consola
+typer==0.12.5            # Crear CLI (interfaces de línea de comandos) modernas
+
+# ========================
+# 🧮 CIENCIA DE DATOS Y ANÁLISIS
+# ========================
+numpy==1.26.4            # Compatible con TensorFlow, PyTorch y pandas
+pandas==2.2.3            # Manipulación y análisis de datos
+matplotlib==3.9.2        # Gráficas 2D/3D
+seaborn==0.13.2          # Visualización estadística avanzada
+scipy==1.14.1            # Herramientas matemáticas y científicas
+sympy==1.13.3            # Cálculo simbólico (álgebra y ecuaciones)
+
+# ========================
+# 🤖 MACHINE LEARNING / IA
+# ========================
+scikit-learn==1.5.2      # Modelos clásicos de machine learning
+xgboost==2.1.1           # Boosting para predicción
+lightgbm==4.5.0          # ML rápido basado en árboles
+transformers==4.37.2     # Modelos de lenguaje (HuggingFace)
+datasets==2.14.5          # Conjuntos de datos para ML
+evaluate==0.4.0          # Métricas de evaluación
+tensorflow==2.17.1       # Deep learning (CPU, compatible con numpy 1.26)
+torch==2.7.0             # Deep learning (PyTorch compatible con numpy 1.26)
+torchvision==0.22.0      # Utilidades de visión para PyTorch
+
+# ========================
+# 🌐 DESARROLLO WEB
+# ========================
+fastapi==0.115.4         # Framework web moderno
+uvicorn==0.32.0          # Servidor ASGI para FastAPI
+jinja2==3.1.4            # Plantillas HTML
+sqlalchemy==2.0.36       # ORM para bases de datos
+psycopg2-binary==2.9.10  # PostgreSQL connector
+pymysql==1.1.1           # MySQL connector
+redis==5.0.8             # Cliente Redis (cache/colas)
+
+# ========================
+# 📦 DATOS Y ARCHIVOS
+# ========================
+openpyxl==3.1.5          # Leer/escribir Excel (.xlsx)
+xlrd==2.0.1              # Leer archivos .xls antiguos
+pyarrow==17.0.0          # Soporte Parquet/Arrow
+fastparquet==2024.5.0    # Parquet (versión estable compatible con numpy 1.26)
+jsonschema==4.23.0       # Validación de JSON
+
+# ========================
+# 🧰 DESARROLLO Y AUTOMATIZACIÓN
+# ========================
+pytest==8.3.3            # Testing
+black==24.10.0           # Formateador automático
+flake8==7.1.1            # Linter
+fabric==3.2.2            # Automatización remota (SSH)
+invoke==2.2.0            # Automatización local
+
+# ========================
+# 💾 BASES DE DATOS Y ETL
+# ========================
+sqlmodel==0.0.22         # ORM híbrido SQLAlchemy + Pydantic
+pydantic==2.9.2          # Validación/modelado de datos
+alembic==1.13.3          # Migraciones de BD
+duckdb==1.1.3            # Motor analítico en memoria
+pymongo==4.9.2           # Cliente MongoDB
+
+# ========================
+# 🧠 UTILIDADES Y PRODUCTIVIDAD PERSONAL
+# ========================
+todoist-python==8.0.1    # API Todoist (tareas)
+notion-client==2.2.1     # API Notion
+schedule==1.2.2          # Planificador de tareas automáticas
+pendulum==3.0.0          # Manejo avanzado de fechas y tiempos
+humanize==4.10.0         # Mostrar datos numéricos de forma "humana"
+
+# ========================
+# 🛠️ DESARROLLO AVANZADO
+# ========================
+loguru==0.7.2            # Logging potente
+tqdm==4.66.5             # Barras de progreso
+colorama==0.4.6          # Colores en consola
+psutil==5.9.5            # Información del sistema y procesos
+click==8.1.7             # Creación de CLIs avanzadas   
+packaging==24.1          # Manejo avanzado de versiones y dependencias
