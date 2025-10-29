@@ -1,0 +1,50 @@
+Ejercicio #1 — API de Gestión de Tareas (Task Manager API)
+Objetivo del ejercicio: Crear una API RESTful con FastAPI y Pydantic para gestionar tareas (to-do list). La API permitirá crear, leer, actualizar y eliminar tareas, validando los datos con modelos Pydantic.
+
+Descripción general: Vas a construir una API que permita manejar una lista de tareas con la siguiente información por cada tarea: id (int): identificador único de la tarea; titulo (str): título o nombre de la tarea; descripcion (str | opcional): una breve descripción; estado (str): puede ser "pendiente", "en_progreso" o "completada"; fecha_creacion (datetime): fecha automática cuando se crea la tarea. Los datos deben validarse y manejarse en memoria (diccionario o lista), no con base de datos todavía.
+
+Endpoints requeridos:
+
+1. GET /tareas
+Descripción: Devuelve la lista completa de tareas.
+Parámetros de ruta: Ninguno.
+Parámetros de consulta (opcionales): estado: str → Filtra tareas por estado (pendiente, en_progreso, completada).
+
+2. GET /tareas/{id}
+Descripción: Devuelve una tarea específica por su ID.
+Parámetro de ruta: id: int → El identificador único de la tarea.
+
+3. POST /tareas
+Descripción: Crea una nueva tarea.
+Cuerpo del request: Un JSON con los siguientes campos (modelo Pydantic): { "titulo": "string", "descripcion": "string (opcional)", "estado": "pendiente" | "en_progreso" | "completada" }
+Validación Pydantic: titulo → obligatorio, longitud mínima 3 caracteres; estado → debe ser uno de los tres valores válidos.
+
+4. PUT /tareas/{id}
+Descripción: Actualiza los datos de una tarea existente.
+Parámetro de ruta: id: int
+Cuerpo del request: JSON con campos opcionales para actualizar (titulo, descripcion, estado).
+Validación: estado debe ser uno de los valores permitidos.
+
+5. DELETE /tareas/{id}
+Descripción: Elimina una tarea según su ID.
+Parámetro de ruta: id: int
+
+Puntos clave a practicar:
+
+Crear modelos Pydantic: TaskCreate → para creación; TaskUpdate → para actualización parcial; Task → para respuesta (con id y fecha_creacion).
+
+Usar List[Task] como tipo de retorno en los endpoints que devuelven varias tareas.
+
+Implementar validación de estados usando Literal o Enum en Pydantic.
+
+Agregar mensajes de error personalizados (por ejemplo, si una tarea no existe).
+
+Reto opcional (nivel extra):
+Agregar un nuevo endpoint GET /tareas/resumen que devuelva un JSON con la cantidad total de tareas por estado: { "pendientes": 3, "en_progreso": 5, "completadas": 7 }
+
+Qué se evaluará:
+Estructura correcta del código.
+Validaciones claras con Pydantic.
+Uso adecuado de parámetros de ruta y de consulta.
+Claridad en las respuestas JSON (status codes, mensajes, etc.).
+Buen manejo de errores (por ejemplo, tarea no encontrada).
