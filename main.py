@@ -5,7 +5,7 @@ from typing import Optional
 from datetime import datetime
 from enum import Enum
 
-
+#Clase para definir los 3 estados de la tarea se le pasa el contenido que es un string de los 3 estados y Enum para definir los objetos de la clase
 class EstadoEnum(str, Enum):
     pendiente = "Pendiente"
     en_progreso = "En Progreso"
