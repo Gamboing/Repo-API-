@@ -29,14 +29,15 @@ class UserConnection():
             self.conn.close()
 
 
-    def write(self, data):
+    def write(self, data, data1):
         with self.conn.cursor() as cur:
             cur.execute("""
                     INSERT INTO "clientes"(nombre, correo, telefono) VALUES(%(nombre)s, %(correo)s, %(telefono)s)
             """, data)
+            cur.execute("""
+                    INSERT INTO "productos"(nombre, precio) VALUES(%(nombre)s, %(precio)s)
+            """, data1)
         self.conn.commit()
-
-    
     
     def __def__(self):
         self.conn.close()
