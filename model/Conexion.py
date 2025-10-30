@@ -10,7 +10,7 @@ class UserConnection():
                 host="localhost",        # Host de la base de datos
                 port="5432",             # Puerto de la base de datos   
                 user="postgres",         # Usuario de la base de datos
-                password="Hadali2203",   # Contraseña del usuario
+                password="Hadali2203",   # Contraseña del usuario / come cuando hay
                 database="guru99"        # Nombre de la base de datos
          )
 
@@ -29,15 +29,54 @@ class UserConnection():
             self.conn.close()
 
 
-    def write(self, data, data1):
+    def read_cl(self):
+        with self.conn.cursor() as cur:
+        # Ejecuta y guarda resultados de la primera consulta
+            cur.execute('SELECT * FROM "clientes"')
+            data2 = cur.fetchall()
+        return data2
+    
+    def read_vt(self):
+        with self.conn.cursor() as cur:
+            cur.execute('SELECT * FROM "ventas"')
+            data3 = cur.fetchall()
+        return data3
+    
+    def read_pr(self):
+        with self.conn.cursor() as cur:
+            cur.execute('SELECT * FROM "productos"')
+            data4 = cur.fetchall()
+        return data4
+
+
+    def write_cl(self, data):
+        with self.conn.cursor() as cur:
+        # Inserta cliente
+            cur.execute("""
+            INSERT INTO "clientes" (nombre, correo, telefono)
+            VALUES (%(nombre)s, %(correo)s, %(telefono)s)
+                """, data)
+        self.conn.commit()
+            
+
+    def write_vt(self, id_producto, id_cliente):
         with self.conn.cursor() as cur:
             cur.execute("""
-                    INSERT INTO "clientes"(nombre, correo, telefono) VALUES(%(nombre)s, %(correo)s, %(telefono)s)
-            """, data)
-            cur.execute("""
-                    INSERT INTO "productos"(nombre, precio) VALUES(%(nombre)s, %(precio)s)
-            """, data1)
+                INSERT INTO ventas (id_cliente, id_producto, fecha)
+                VALUES (%s, %s, CURRENT_DATE)
+            """, (id_cliente, id_producto))
         self.conn.commit()
+
+    def write_pr(self, data2):
+        with self.conn.cursor() as cur:
+        # Inserta producto
+            cur.execute("""
+            INSERT INTO "productos" (nombre, precio)
+            VALUES (%(nombre)s, %(precio)s)
+             """, data2)
+    # Guarda los cambios
+        self.conn.commit()
+
     
     def __def__(self):
         self.conn.close()
