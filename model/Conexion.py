@@ -99,7 +99,28 @@ class UserConnection():
         self.conn.commit()
 
 
+    def update_cl(self,data):
+        with self.conn.cursor() as cur:
+            cur.execute("""
+             UPDATE "clientes" SET nombre = %(nombre)s, correo = %(correo)s, telefono = %(telefono)s WHERE id_cliente = %(id_cliente)s
+             """, data)
+        self.conn.commit()
 
+
+    def update_vt(self,data):
+        with self.conn.cursor() as cur:
+            cur.execute("""
+             UPDATE "ventas" SET id_producto = %(id_producto)s, id_cliente = %(id_cliente)s WHERE id_venta = %(id_venta)s
+             """, data)
+        self.conn.commit()
+
+
+    def update_pr(self,data):
+        with self.conn.cursor() as cur:
+            cur.execute("""
+             UPDATE "productos" SET nombre = %(nombre)s, precio = %(precio)s WHERE id_producto = %(id_producto)s
+             """, data)
+        self.conn.commit()
 
 
     
