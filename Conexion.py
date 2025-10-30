@@ -1,22 +1,23 @@
 import psycopg2
-
-try:
-    connection=psycopg2.connect(
-        host="localhost",
-        user="postgres",
-        password="Hadali2203",
-        database="guru99"
+#Conexion a la base de datos postgres usando psycopg2
+try:    # Intentar conectar a la base de datos
+    connection=psycopg2.connect( # Parametros de conexion
+        host="localhost",        # Host de la base de datos
+        port="5432",             # Puerto de la base de datos   
+        user="postgres",         # Usuario de la base de datos
+        password="Hadali2203",   # Contraseña del usuario
+        database="guru99"        # Nombre de la base de datos
     )
 
-    print("Conexion exitosa")
-    cursor=connection.cursor()
-    cursor.execute("SELECT version()")
-    row=cursor.fetchone()
-    print(row)
-    cursor.execute("SELECT * FROM ventas")
-    rows=cursor.fetchall()
-    for row in rows:
-        print(row)
+    print("Conexion exitosa")    # Imprime el mensaje de conexion exitosa
+    cursor=connection.cursor()   # Crear un cursor para ejecutar consultas
+    cursor.execute("SELECT version()")  # Ejecutar una consulta para obtener la version de la base de datos
+    row=cursor.fetchone()          # Obtener el resultado de la consulta
+    print(row)                  # Imprimir la version de la base de datos
+    cursor.execute("SELECT * FROM ventas") # Ejecutar una consulta para obtener todos los registros de la tabla ventas
+    rows=cursor.fetchall()      # Obtener todos los registros de la consulta
+    for row in rows:        # Iterar sobre los registros y imprimir cada uno 
+        print(row)             # Imprimir el registro
 
-except Exception as ex:
-    print(ex)
+except Exception as ex:     # Capturar cualquier excepcion que ocurra durante la conexion o la ejecucion de consultas
+    print(ex)               # Imprimir el mensaje de la excepcion
