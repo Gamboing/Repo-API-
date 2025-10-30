@@ -51,5 +51,17 @@ def insert3 (producto:Producto):
     conn.write_pr(data)
 
 
+@app.delete("/clientes/borrar/{id_cliente}")
+def delete1(id_cliente:str):
+    conn.delete_cl(id_cliente)
+
+@app.delete("/ventas/borrar/{id_venta}")
+def delete1(id_venta:str):
+    conn.delete_vt(id_venta)
+
+@app.delete("/productos/borrar/{id_producto}")
+def delete1(id_producto:str):
+    conn.delete_pr(id_producto)
+
 
  

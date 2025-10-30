@@ -77,6 +77,31 @@ class UserConnection():
     # Guarda los cambios
         self.conn.commit()
 
+    def delete_cl(self,id_cliente):
+        with self.conn.cursor() as cur:
+            cur.execute("""
+            DELETE FROM "clientes" WHERE id_cliente = %s
+             """, (id_cliente))
+        self.conn.commit()
+
+    def delete_vt(self,id_venta):
+        with self.conn.cursor() as cur:
+            cur.execute("""
+            DELETE FROM "ventas" WHERE id_venta = %s
+             """, (id_venta))
+        self.conn.commit()
+
+    def delete_pr(self,id_producto):
+        with self.conn.cursor() as cur:
+            cur.execute("""
+            DELETE FROM "productos" WHERE id_producto = %s
+             """, (id_producto))
+        self.conn.commit()
+
+
+
+
+
     
     def __def__(self):
         self.conn.close()
