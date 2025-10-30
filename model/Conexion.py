@@ -10,7 +10,7 @@ class UserConnection():
                 host="localhost",        # Host de la base de datos
                 port="5432",             # Puerto de la base de datos   
                 user="postgres",         # Usuario de la base de datos
-                password="Hadali2203",   # Contraseña del usuario / come cuando hay
+                password="Hadali2203",   # Contraseña del usuario 
                 database="guru99"        # Nombre de la base de datos
          )
 
