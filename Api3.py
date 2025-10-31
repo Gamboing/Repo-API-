@@ -82,7 +82,7 @@ class UserConnection: # Clase para manejar las operaciones de la base de datos
         if c: # Si el cliente existe, actualizar los valores
             c.nombre = cliente.nombre # Actualizar 
             c.correo = cliente.correo
-            c.telefono = cliente.telefono
+            c.telefono = cliente.telefono 
             self.session.commit()
 
     def update_pr(self, id_producto, producto): 
@@ -98,76 +98,9 @@ class UserConnection: # Clase para manejar las operaciones de la base de datos
             v.id_cliente = venta.id_cliente
             v.id_producto = venta.id_producto
             self.session.commit()
-
+ # c, v, p por que es el objeto obtenido de la base de datos
     def __del__(self): # Destructor para cerrar la sesión
         self.session.close() # Cerrar la sesión al eliminar la instancia
-
-
-
-
-Base.metadata.create_all(engine)
-
-class UserConnection:
-    def __init__(self):
-        self.session = Session()
-
-    def read_cl(self):
-        return self.session.query(ClienteDB).all()
-
-    def read_vt(self):
-        return self.session.query(VentaDB).all()
-
-    def read_pr(self):
-        return self.session.query(ProductoDB).all()
-
-    def write_cl(self, cliente):
-        c = ClienteDB(nombre=cliente.nombre, correo=cliente.correo, telefono=cliente.telefono)
-        self.session.add(c)
-        self.session.commit()
-
-    def write_vt(self, venta):
-        v = VentaDB(id_cliente=venta.id_cliente, id_producto=venta.id_producto)
-        self.session.add(v)
-        self.session.commit()
-
-    def write_pr(self, producto):
-        p = ProductoDB(nombre=producto.nombre, precio=producto.precio)
-        self.session.add(p)
-        self.session.commit()
-
-    def delete_cl(self, id_cliente):
-        self.session.query(ClienteDB).filter(ClienteDB.id_cliente == id_cliente).delete()
-        self.session.commit()
-
-    def delete_vt(self, id_venta):
-        self.session.query(VentaDB).filter(VentaDB.id_venta == id_venta).delete()
-        self.session.commit()
-
-    def delete_pr(self, id_producto):
-        self.session.query(ProductoDB).filter(ProductoDB.id_producto == id_producto).delete()
-        self.session.commit()
-
-    def update_cl(self, id_cliente, cliente):
-        c = self.session.query(ClienteDB).filter(ClienteDB.id_cliente == id_cliente).first()
-        if c:
-            c.nombre = cliente.nombre
-            c.correo = cliente.correo
-            c.telefono = cliente.telefono
-            self.session.commit()
-
-    def update_pr(self, id_producto, producto):
-        p = self.session.query(ProductoDB).filter(ProductoDB.id_producto == id_producto).first()
-        if p:
-            p.nombre = producto.nombre
-            p.precio = producto.precio
-            self.session.commit()
-
-    def update_vt(self, id_venta, venta):
-        v = self.session.query(VentaDB).filter(VentaDB.id_venta == id_venta).first()
-        if v:
-            v.id_cliente = venta.id_cliente
-            v.id_producto = venta.id_producto
-            self.session.commit()
 
     def __del__(self):
         self.session.close()
