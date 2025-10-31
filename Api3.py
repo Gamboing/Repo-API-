@@ -6,66 +6,67 @@ from sqlalchemy import create_engine, Column, Integer, String, Float, Date, Fore
 from sqlalchemy.orm import sessionmaker, declarative_base, relationship
 
 app = FastAPI()
-Base = declarative_base()
-engine = create_engine("postgresql+psycopg2://postgres:Hadali2203@localhost:5432/guru99")
-Session = sessionmaker(bind=engine)
+Base = declarative_base() # Definición de la base declarativa
+engine = create_engine("postgresql+psycopg2://postgres:Hadali2203@localhost:5432/guru99") # Reemplaza con tu cadena de conexión
+Session = sessionmaker(bind=engine) # Crear una clase de sesión
 
-class ClienteDB(Base):
+class ClienteDB(Base): # Modelo de cliente para la base de datos
     __tablename__ = "clientes"
-    id_cliente = Column(Integer, primary_key=True, autoincrement=True)
-    nombre = Column(String)
-    correo = Column(String)
-    telefono = Column(String)
-    ventas = relationship("VentaDB", back_populates="cliente")
+    id_cliente = Column(Integer, primary_key=True, autoincrement=True) # Llave primaria
+    nombre = Column(String) # Nombre del cliente
+    correo = Column(String) # Correo del cliente
+    telefono = Column(String) # Teléfono del cliente
+    ventas = relationship("VentaDB", back_populates="cliente") # Relación con ventas
 
-class ProductoDB(Base):
-    __tablename__ = "productos"
-    id_producto = Column(Integer, primary_key=True, autoincrement=True)
+class ProductoDB(Base): # Modelo de producto para la base de datos
+    __tablename__ = "productos" # Nombre de la tabla
+    id_producto = Column(Integer, primary_key=True, autoincrement=True) # Llave primaria
     nombre = Column(String)
     precio = Column(Float)
-    ventas = relationship("VentaDB", back_populates="producto")
+    ventas = relationship("VentaDB", back_populates="producto")# Relación con ventas
 
-class VentaDB(Base):
+class VentaDB(Base): # Modelo de venta para la base de datos
     __tablename__ = "ventas"
-    id_venta = Column(Integer, primary_key=True, autoincrement=True)
-    id_cliente = Column(Integer, ForeignKey("clientes.id_cliente"))
-    id_producto = Column(Integer, ForeignKey("productos.id_producto"))
-    fecha = Column(Date, default=date.today)
-    cliente = relationship("ClienteDB", back_populates="ventas")
-    producto = relationship("ProductoDB", back_populates="ventas")
+    id_venta = Column(Integer, primary_key=True, autoincrement=True) # Llave primaria
+    id_cliente = Column(Integer, ForeignKey("clientes.id_cliente")) # Llave foránea al cliente
+    id_producto = Column(Integer, ForeignKey("productos.id_producto")) # Llave foránea al producto
+    fecha = Column(Date, default=date.today) # Fecha de la venta
+    cliente = relationship("ClienteDB", back_populates="ventas") # Relación con cliente 
+    producto = relationship("ProductoDB", back_populates="ventas") # Relación con producto el back_populates significa que es bidireccional
 
-Base.metadata.create_all(engine)
 
-class UserConnection:
+Base.metadata.create_all(engine)# Crear las tablas en la base de datos
+
+class UserConnection: # Clase para manejar las operaciones de la base de datos
     def __init__(self):
         self.session = Session()
 
-    def read_cl(self):
-        return self.session.query(ClienteDB).all()
+    def read_cl(self): # Leer todos los clientes
+        return self.session.query(ClienteDB).all() # Obtener todos los clientes
 
-    def read_vt(self):
-        return self.session.query(VentaDB).all()
+    def read_vt(self): # Leer todas las ventas
+        return self.session.query(VentaDB).all()   # Obtener todas las ventas
 
-    def read_pr(self):
-        return self.session.query(ProductoDB).all()
+    def read_pr(self): # Leer todos los productos
+        return self.session.query(ProductoDB).all()# Obtener todos los productos
 
-    def write_cl(self, cliente):
-        c = ClienteDB(nombre=cliente.nombre, correo=cliente.correo, telefono=cliente.telefono)
-        self.session.add(c)
-        self.session.commit()
+    def write_cl(self, cliente): # Escribir un nuevo cliente
+        c = ClienteDB(nombre=cliente.nombre, correo=cliente.correo, telefono=cliente.telefono) # Crear un nuevo cliente comparando con el modelo de la base de datos para asignar los valores
+        self.session.add(c) # Agregar el cliente a la sesión
+        self.session.commit() # Confirmar los cambios
 
     def write_vt(self, venta):
-        v = VentaDB(id_cliente=venta.id_cliente, id_producto=venta.id_producto)
+        v = VentaDB(id_cliente=venta.id_cliente, id_producto=venta.id_producto) # Crear una nueva venta comparando con el modelo de la base de datos para asignar los valores de id_cliente e id_producto
         self.session.add(v)
         self.session.commit()
 
     def write_pr(self, producto):
-        p = ProductoDB(nombre=producto.nombre, precio=producto.precio)
+        p = ProductoDB(nombre=producto.nombre, precio=producto.precio) # Crear un nuevo producto comparando con el modelo de la base de datos para asignar los valores
         self.session.add(p)
         self.session.commit()
 
-    def delete_cl(self, id_cliente):
-        self.session.query(ClienteDB).filter(ClienteDB.id_cliente == id_cliente).delete()
+    def delete_cl(self, id_cliente): # Eliminar un cliente por id
+        self.session.query(ClienteDB).filter(ClienteDB.id_cliente == id_cliente).delete() # Filtrar por id_cliente y eliminar
         self.session.commit()
 
     def delete_vt(self, id_venta):
@@ -76,15 +77,15 @@ class UserConnection:
         self.session.query(ProductoDB).filter(ProductoDB.id_producto == id_producto).delete()
         self.session.commit()
 
-    def update_cl(self, id_cliente, cliente):
-        c = self.session.query(ClienteDB).filter(ClienteDB.id_cliente == id_cliente).first()
-        if c:
-            c.nombre = cliente.nombre
+    def update_cl(self, id_cliente, cliente): # Actualizar un cliente por id 
+        c = self.session.query(ClienteDB).filter(ClienteDB.id_cliente == id_cliente).first() # Filtrar por id_cliente y obtener el primer resultado para comparar que el cliente exista
+        if c: # Si el cliente existe, actualizar los valores
+            c.nombre = cliente.nombre # Actualizar 
             c.correo = cliente.correo
             c.telefono = cliente.telefono
             self.session.commit()
 
-    def update_pr(self, id_producto, producto):
+    def update_pr(self, id_producto, producto): 
         p = self.session.query(ProductoDB).filter(ProductoDB.id_producto == id_producto).first()
         if p:
             p.nombre = producto.nombre
@@ -98,73 +99,8 @@ class UserConnection:
             v.id_producto = venta.id_producto
             self.session.commit()
 
-    def __del__(self):
-        self.session.close()
+    def __del__(self): # Destructor para cerrar la sesión
+        self.session.close() # Cerrar la sesión al eliminar la instancia
 
-class Venta(BaseModel):
-    id_venta: Optional[int] = None
-    id_cliente: Optional[int] = None
-    fecha: Optional[date] = None
-    id_producto: Optional[int] = None
 
-class Cliente(BaseModel):
-    id_cliente: Optional[int] = None
-    nombre: str
-    correo: str
-    telefono: str
-
-class Producto(BaseModel):
-    id_producto: Optional[int] = None
-    nombre: str
-    precio: float
-
-conn = UserConnection()
-
-@app.get("/cliente")
-def root():
-    return conn.read_cl()
-
-@app.get("/venta")
-def root2():
-    return conn.read_vt()
-
-@app.get("/producto")
-def root3():
-    return conn.read_pr()
-
-@app.post("/clientes/insert")
-def insert1(cliente: Cliente):
-    conn.write_cl(cliente)
-
-@app.post("/ventas/insert")
-def insert2(ventas: Venta):
-    conn.write_vt(ventas)
-
-@app.post("/productos/insert")
-def insert3(producto: Producto):
-    conn.write_pr(producto)
-
-@app.delete("/clientes/borrar/{id_cliente}")
-def delete1(id_cliente: int):
-    conn.delete_cl(id_cliente)
-
-@app.delete("/ventas/borrar/{id_venta}")
-def delete2(id_venta: int):
-    conn.delete_vt(id_venta)
-
-@app.delete("/productos/borrar/{id_producto}")
-def delete3(id_producto: int):
-    conn.delete_pr(id_producto)
-
-@app.put("/clientes/actualizar/{id_cliente}")
-def update1(id_cliente: int, cliente: Cliente):
-    conn.update_cl(id_cliente, cliente)
-
-@app.put("/productos/actualizar/{id_producto}")
-def update2(id_producto: int, producto: Producto):
-    conn.update_pr(id_producto, producto)
-
-@app.put("/ventas/actualizar/{id_venta}")
-def update3(id_venta: int, venta: Venta):
-    conn.update_vt(id_venta, venta)
 
