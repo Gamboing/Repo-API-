@@ -104,3 +104,139 @@ class UserConnection: # Clase para manejar las operaciones de la base de datos
 
 
 
+
+Base.metadata.create_all(engine)
+
+class UserConnection:
+    def __init__(self):
+        self.session = Session()
+
+    def read_cl(self):
+        return self.session.query(ClienteDB).all()
+
+    def read_vt(self):
+        return self.session.query(VentaDB).all()
+
+    def read_pr(self):
+        return self.session.query(ProductoDB).all()
+
+    def write_cl(self, cliente):
+        c = ClienteDB(nombre=cliente.nombre, correo=cliente.correo, telefono=cliente.telefono)
+        self.session.add(c)
+        self.session.commit()
+
+    def write_vt(self, venta):
+        v = VentaDB(id_cliente=venta.id_cliente, id_producto=venta.id_producto)
+        self.session.add(v)
+        self.session.commit()
+
+    def write_pr(self, producto):
+        p = ProductoDB(nombre=producto.nombre, precio=producto.precio)
+        self.session.add(p)
+        self.session.commit()
+
+    def delete_cl(self, id_cliente):
+        self.session.query(ClienteDB).filter(ClienteDB.id_cliente == id_cliente).delete()
+        self.session.commit()
+
+    def delete_vt(self, id_venta):
+        self.session.query(VentaDB).filter(VentaDB.id_venta == id_venta).delete()
+        self.session.commit()
+
+    def delete_pr(self, id_producto):
+        self.session.query(ProductoDB).filter(ProductoDB.id_producto == id_producto).delete()
+        self.session.commit()
+
+    def update_cl(self, id_cliente, cliente):
+        c = self.session.query(ClienteDB).filter(ClienteDB.id_cliente == id_cliente).first()
+        if c:
+            c.nombre = cliente.nombre
+            c.correo = cliente.correo
+            c.telefono = cliente.telefono
+            self.session.commit()
+
+    def update_pr(self, id_producto, producto):
+        p = self.session.query(ProductoDB).filter(ProductoDB.id_producto == id_producto).first()
+        if p:
+            p.nombre = producto.nombre
+            p.precio = producto.precio
+            self.session.commit()
+
+    def update_vt(self, id_venta, venta):
+        v = self.session.query(VentaDB).filter(VentaDB.id_venta == id_venta).first()
+        if v:
+            v.id_cliente = venta.id_cliente
+            v.id_producto = venta.id_producto
+            self.session.commit()
+
+    def __del__(self):
+        self.session.close()
+#Creacion de los modelos de datos para la Api con pydantic igual se mantienen los modelos de Api 2
+class Venta(BaseModel):
+    id_venta: Optional[int] = None
+    id_cliente: Optional[int] = None
+    fecha: Optional[date] = None
+    id_producto: Optional[int] = None
+
+class Cliente(BaseModel):
+    id_cliente: Optional[int] = None
+    nombre: str
+    correo: str
+    telefono: str
+
+class Producto(BaseModel):
+    id_producto: Optional[int] = None
+    nombre: str
+    precio: float
+
+conn = UserConnection()
+
+#Creacion de las rutas y los endpoints de la Api codigo de Api 2
+@app.get("/cliente")
+def root():
+    return conn.read_cl()
+
+@app.get("/venta")
+def root2():
+    return conn.read_vt()
+
+@app.get("/producto")
+def root3():
+    return conn.read_pr()
+
+@app.post("/clientes/insert")
+def insert1(cliente: Cliente):
+    conn.write_cl(cliente)
+
+@app.post("/ventas/insert")
+def insert2(ventas: Venta):
+    conn.write_vt(ventas)
+
+@app.post("/productos/insert")
+def insert3(producto: Producto):
+    conn.write_pr(producto)
+
+@app.delete("/clientes/borrar/{id_cliente}")
+def delete1(id_cliente: int):
+    conn.delete_cl(id_cliente)
+
+@app.delete("/ventas/borrar/{id_venta}")
+def delete2(id_venta: int):
+    conn.delete_vt(id_venta)
+
+@app.delete("/productos/borrar/{id_producto}")
+def delete3(id_producto: int):
+    conn.delete_pr(id_producto)
+
+@app.put("/clientes/actualizar/{id_cliente}")
+def update1(id_cliente: int, cliente: Cliente):
+    conn.update_cl(id_cliente, cliente)
+
+@app.put("/productos/actualizar/{id_producto}")
+def update2(id_producto: int, producto: Producto):
+    conn.update_pr(id_producto, producto)
+
+@app.put("/ventas/actualizar/{id_venta}")
+def update3(id_venta: int, venta: Venta):
+    conn.update_vt(id_venta, venta)
+
